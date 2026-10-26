@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fixed localization silently falling back to English for Simplified Chinese, Traditional Chinese and
+  Spanish: `Localization/*.json` must be named after the game's `Language` enum member
+  (`ChineseSimplified`, `ChineseTraditional`, `Spanish`), but three files used different names and so
+  were never matched when imported
+- Fixed Spanish localization overwriting Spanish (LATAM) when both were loaded, by matching embedded
+  localization resources on an exact `Localization.{Language}.json` name instead of a substring
+- Fixed popup buttons showing raw localization keys such as `DataConsentYes`, by resolving them through
+  Mod Helper's own text table
+- Localized the remaining hardcoded UI text: the mod download success popup, the mod template directory
+  prompt and the project upgrade prompt
+- Localized the Mod Browser sort options, which were named at runtime and therefore never picked up
+- Rewrote the Simplified Chinese, Traditional Chinese, Japanese, Russian and German localizations with
+  reviewed wording instead of machine translation
+
 ## [3.6.10] - 2026-10-19
 
 - Updated for BTD6 v57.2

@@ -65,6 +65,14 @@ public override void RegisterText(Il2CppSystem.Collections.Generic.Dictionary<st
 The standard btd6.targets import automatically embeds `/Localization/[Language].json` files in your mod
 project.
 
+**The file name must be a `Language` enum member name exactly** — e.g. `ChineseSimplified.json`, not
+`SimplifiedChinese.json`, and `Spanish.json`, not `Spanish_Spain.json`. Localization is matched by
+`resourceName.EndsWith($"Localization.{language}.json")`, so a file named after anything other than
+the enum member is never loaded and that language silently falls back to English. The exact member
+names live in `Il2CppNinjaKiwi.Localization.dll`; the directories under `Mods/BloonsTD6 Mod
+Helper/Localization/` are created from that same enum, so listing those directories shows every name
+that will be recognized.
+
 You can use the Localization Button on your own mod with active language English to get a basis json for your mod
 
 TIP: If you press the "Translate All" button on the [site](https://gurrenm3.github.io/BTD-Mod-Helper/tools/translate) it
