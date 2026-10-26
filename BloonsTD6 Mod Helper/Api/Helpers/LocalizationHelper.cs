@@ -5,6 +5,8 @@ using Il2CppNinjaKiwi.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static System.IO.WatcherChangeTypes;
+using BTD_Mod_Helper.Extensions;
+
 namespace BTD_Mod_Helper.Api.Helpers;
 
 /// <summary>
@@ -75,8 +77,8 @@ public class LocalizationHelper
             var assembly = mod.GetAssembly();
             foreach (var resourceName in assembly.GetManifestResourceNames())
             {
-                if (!resourceName.Contains($"Localization.{language.ToString()}") ||
-                    !resourceName.EndsWith(".json")) continue;
+                // exact-suffix match: "Localization.Spanish" must not also swallow "Localization.Spanish_LATAM"
+                if (!resourceName.EndsWith($"Localization.{language.ToString()}.json")) continue;
 
                 try
                 {
@@ -227,4 +229,26 @@ public class LocalizationHelper
 
     #endregion
 
+    #region Localized Popup Button Labels
+
+    // The consts above are vanilla localization *keys*. ShowPopup does not localize its button
+    // arguments, so passing a bare key prints the key itself (e.g. "DataConsentYes"). These resolve
+    // through Mod Helper's own table, which falls back to the English default when a language is missing.
+
+    /// <summary>
+    /// Localized "Yes" for popup buttons
+    /// </summary>
+    public static string YesText => ModHelper.Localize("YesButton", "Yes").Localize();
+
+    /// <summary>
+    /// Localized "No" for popup buttons
+    /// </summary>
+    public static string NoText => ModHelper.Localize("NoButton", "No").Localize();
+
+    /// <summary>
+    /// Localized "OK" for popup buttons
+    /// </summary>
+    public static string OkText => ModHelper.Localize("OkButton", "OK").Localize();
+
+    #endregion
 }

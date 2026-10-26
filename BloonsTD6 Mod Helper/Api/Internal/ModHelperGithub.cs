@@ -1,4 +1,4 @@
-﻿#if !RELEASELITE
+#if !RELEASELITE
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -56,6 +56,8 @@ internal static class ModHelperGithub
         "has dependencies that it may not function without. Would you like to download these as well?");
     private static readonly string DownloadDepsSuccess = ModHelper.Localize(nameof(DownloadDepsSuccess),
         "Successfully downloaded dependencies! Remember to restart to apply changes.");
+    private static readonly string ModDownloadSuccess = ModHelper.Localize(nameof(ModDownloadSuccess),
+        "Successfully downloaded {0}, remember to restart to apply the changes!");
 
     private static readonly List<Task> loadTasks = [];
     private static readonly ConcurrentDictionary<string, ModHelperData> mods = [];
@@ -333,10 +335,10 @@ internal static class ModHelperGithub
                                     }
                                     PopupScreen.instance.SafelyQueue(popupScreen =>
                                         popupScreen.ShowOkPopup(DownloadDepsSuccess.Localize()));
-                                }), "Yes", null, "No", Popup.TransitionAnim.Scale, instantClose: true);
+                                }), LocalizationHelper.YesText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale, instantClose: true);
                         });
                     }
-                }), "Yes", null, "No", Popup.TransitionAnim.Scale, instantClose: true);
+                }), LocalizationHelper.YesText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale, instantClose: true);
             screen.MakeTextScrollable();
         });
 
@@ -525,7 +527,7 @@ internal static class ModHelperGithub
 
             if (success)
             {
-                var message = $"Successfully downloaded {name}, remember to restart to apply the changes!";
+                var message = string.Format(ModDownloadSuccess.Localize(), name);
                 ModHelper.Log(message);
                 if (showPopup)
                 {

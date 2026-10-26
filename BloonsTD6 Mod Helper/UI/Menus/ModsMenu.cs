@@ -130,6 +130,9 @@ internal class ModsMenu : ModGameMenu<ExtraSettingsScreen>
     private static readonly string DisableAll = ModHelper.Localize(nameof(DisableAll), "Disable All");
     private static readonly string EnableAll = ModHelper.Localize(nameof(EnableAll), "Enable All");
     private static readonly string Version = ModHelper.Localize(nameof(Version), "Version");
+    private static readonly string ModsTitle = ModHelper.Localize("Mods", "Mods");
+    private static readonly string RestartLabel = ModHelper.Localize("Restart", "Restart");
+    private static readonly string DisableLabel = ModHelper.Localize("Disable", "Disable");
     private static readonly string ExportLocalization = ModHelper.Localize(nameof(ExportLocalization),
         "Export Localization");
     private static readonly string ExportLocalizationBody = ModHelper.Localize(nameof(ExportLocalizationBody), """
@@ -147,7 +150,7 @@ internal class ModsMenu : ModGameMenu<ExtraSettingsScreen>
     public override bool OnMenuOpened(Object data)
     {
         GameMenu.anim.updateMode = AnimatorUpdateMode.UnscaledTime;
-        CommonForegroundHeader.SetText("Mods");
+        CommonForegroundHeader.SetText(ModsTitle.Localize());
 
         var panelTransform = GameMenu.gameObject.GetComponentInChildrenByName<RectTransform>("Panel");
         var panel = panelTransform.gameObject;
@@ -285,9 +288,9 @@ internal class ModsMenu : ModGameMenu<ExtraSettingsScreen>
                 PopupScreen.instance.SafelyQueue(screen => screen.ShowPopup(PopupScreen.Placement.menuCenter,
                     LocalizationHelper.RestartRequired.Localize(),
                     RestartRequiredPopup.Localize(), new Action(ProcessHelper.RestartGame),
-                    "Yes", null, "No", Popup.TransitionAnim.Scale));
+                    LocalizationHelper.YesText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale));
             }));
-        restartPanel.AddText(new Info("Text", 0, -200, 500, 100), "Restart", FontMedium);
+        restartPanel.AddText(new Info("Text", 0, -200, 500, 100), RestartLabel, FontMedium);
 
 
         if (DateTime.Now is {Month: 4, Day: 1})
@@ -459,7 +462,7 @@ internal class ModsMenu : ModGameMenu<ExtraSettingsScreen>
                         Refresh();
                         PopupScreen.instance.SafelyQueue(popupScreen =>
                             popupScreen.ShowOkPopup(ModUpdateSuccess.Localize()));
-                    }), "Yes", null, "No", Popup.TransitionAnim.Scale));
+                    }), LocalizationHelper.YesText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale));
             })
         );
         updateAllButton.SetActive(false);
@@ -688,7 +691,7 @@ internal class ModsMenu : ModGameMenu<ExtraSettingsScreen>
 
                             }
                         }
-                    ), "Yes", null, "No", Popup.TransitionAnim.Scale))));
+                    ), LocalizationHelper.YesText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale))));
         selectedModLocalization.AddImage(new Info("Icon", InfoPreset.FillParent)
         {
             Width = -Padding / 2f, Height = -Padding / 2f, Y = Padding / 10f
@@ -733,7 +736,7 @@ internal class ModsMenu : ModGameMenu<ExtraSettingsScreen>
         selectedModDisableButton = middleButtons.AddButton(
             new Info("DisableButton", ModPanelHeight * ModHelperButton.LongBtnRatio, ModPanelHeight),
             VanillaSprites.RedBtnLong, new Action(DisableSelectedMod));
-        selectedModDisableButton.AddText(new Info("ButtonText", InfoPreset.FillParent), "Disable", FontLarge);
+        selectedModDisableButton.AddText(new Info("ButtonText", InfoPreset.FillParent), DisableLabel, FontLarge);
 
         selectedModEnableButton = middleButtons.AddButton(
             new Info("EnabledButton", height: ModPanelHeight, width: ModPanelHeight * ModHelperButton.LongBtnRatio),

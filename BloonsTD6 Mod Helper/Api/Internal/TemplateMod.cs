@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using BTD_Mod_Helper.Api.Helpers;
+using BTD_Mod_Helper.Extensions;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using SearchOption = System.IO.SearchOption;
 #if !RELEASELITE
@@ -22,6 +23,13 @@ internal static class TemplateMod
     private const string ZipArchivePrefix = ZipArchiveName + "/";
     private static readonly string[] ValidExtensions = [".cs", ".csproj", ".sln", ".md", ".yml", ".yaml", ".toml"];
 
+    private static readonly string TemplateDirExists = ModHelper.Localize(nameof(TemplateDirExists),
+        "Did not create mod template, directory \"{0}\" already exists.");
+    private static readonly string UpgradeProjectTitle =
+        ModHelper.Localize(nameof(UpgradeProjectTitle), "Upgrade Project");
+    private static readonly string UpgradeProjectBody = ModHelper.Localize(nameof(UpgradeProjectBody),
+        "There was already a mod project found at {0}. Would you like to upgrade its .csproj?");
+
     /// <summary>
     /// Creates an empty mod with the given name
     /// </summary>
@@ -34,16 +42,15 @@ internal static class TemplateMod
             !File.Exists(csProjPath))
         {
             PopupScreen.instance.SafelyQueue(screen =>
-                screen.ShowOkPopup($"Did not create mod template, directory \"{path}\" already exists."));
+                screen.ShowOkPopup(string.Format(TemplateDirExists.Localize(), path)));
         }
         else if (File.Exists(csProjPath))
         {
             PopupScreen.instance.SafelyQueue(screen => screen.ShowPopup(PopupScreen.Placement.menuCenter,
-                "Upgrade Project",
-                $"There was already a mod project found at {path}. " +
-                "Would you like to upgrade its .csproj?",
+                UpgradeProjectTitle.Localize(),
+                string.Format(UpgradeProjectBody.Localize(), path),
                 new Action(() => UpgradeProject(path, name, csProjPath)),
-                "Yes", null, "No", Popup.TransitionAnim.Scale));
+                LocalizationHelper.YesText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale));
         }
         else
         {
@@ -185,7 +192,7 @@ internal static class TemplateMod
     {
         PopupScreen.instance.SafelyQueue(screen => screen.ShowPopup(PopupScreen.Placement.menuCenter,
             $"{verb} {name}", $"Successfully {verb} mod at \"{path}\". Open in default IDE?",
-            new Action(() => OpenProject(path, name)), "Yes", null, "No", Popup.TransitionAnim.Scale));
+            new Action(() => OpenProject(path, name)), LocalizationHelper.YesText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale));
     }
 
 

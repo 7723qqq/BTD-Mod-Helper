@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -214,7 +214,9 @@ internal partial class MelonMain : BloonsTD6Mod
     {
 #if !RELEASELITE
         if (ModHelper.IsEpic &&
-            MelonBase.RegisteredMelons.All(melon => melon.GetName() != EpicCompatibility.RepoName))
+            MelonBase.RegisteredMelons.All(melon =>
+                melon.GetName() != EpicCompatibility.RepoName &&
+                melon.GetName().Replace(" ", "") != EpicCompatibility.RepoName))
         {
             EpicCompatibility.PromptDownloadPlugin();
         }
@@ -234,7 +236,7 @@ internal partial class MelonMain : BloonsTD6Mod
                 {
                     ProcessHelper.OpenURL(
                         $"https://{ModHelper.RepoOwner}.github.io/{ModHelper.RepoName}/wiki/Install-Guide#recommended-version");
-                }), "OK", null, "No", Popup.TransitionAnim.Scale));
+                }), LocalizationHelper.OkText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale));
         }
 
         if (AutoUpdate)

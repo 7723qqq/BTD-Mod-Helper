@@ -63,7 +63,7 @@ internal static class EpicCompatibility
                         });
                     }
                 }
-            ), "Yes", null, "No", Popup.TransitionAnim.Scale));
+            ), LocalizationHelper.YesText, null, LocalizationHelper.NoText, Popup.TransitionAnim.Scale));
     }
 
     private static void SuccessCallback(string filePath)
